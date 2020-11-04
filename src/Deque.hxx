@@ -176,23 +176,68 @@ T& Deque<T>::back()
 template<typename T>
 void Deque<T>::push_front(const T& value)
 {
+    node_ *newPtr = new node_;
 
+    newPtr->val = value;
+    newPtr->next = head_;
+    newPtr->prev = NULL;
+
+    if (empty())
+        tail_ = newPtr;
+    else
+        head_->prev = newPtr;
+    head_ = newPtr;
+    size_++;
 }
 
 template<typename T>
 void Deque<T>::push_back(const T& value)
 {
+    node_ *newPtr = new node_;
 
+    newPtr->val = value;
+    newPtr->next = NULL;
+    newPtr->prev = tail_;
+
+    if (empty())
+        head_ = newPtr;
+    else
+        tail_->next = newPtr;
+    tail_ = newPtr;
+    size_++;
 }
 
 template<typename T>
 void Deque<T>::pop_front()
 {
+
+    node_ *old = head_;
+
+    if(head_ == tail_) {
+        head_ = tail_ = NULL;
+    }
+    else {
+        head_ = old->next;
+        head_->prev = NULL;
+        size_--;
+    }
+    delete old;
 }
 
 template<typename T>
 void Deque<T>::pop_back()
 {
+
+    node_ *old = tail_;
+
+    if(head_ == tail_){
+        head_ = tail_ =NULL;
+    } else {
+        tail_ = old->prev;
+        tail_->next = NULL;
+    }
+    delete old;
+
 }
 
 template<typename T>
@@ -206,6 +251,22 @@ void Deque<T>::clear()
 template<typename T>
 void Deque<T>::splice(Deque<T>& that)
 {
+    if (!that.head_) {
+        return;
+    }
+    if (!head_) {
+        // "transfer" the content of an object with doing copy
+        head_ = std::move(that.head_);
+        tail_ = std::move(that.tail_);
+    } else {
+        (tail_ ? tail_ : head_)->splice(*that.head_);
+        if (that.tail_) {
+            tail_ = std::move(that.tail_);
+            that.head_ = {};
+        } else {
+            tail_ = std::move(that.head_);
+        }
+    }
 }
 
 template<typename T>
@@ -214,3 +275,11 @@ Deque<T>::~Deque()
     clear();
 }
 }
+
+/*
+ * push_back     Add element at the end (public member function )
+   push_front    Insert element at beginning (public member function )
+   pop_back      Delete last element (public member function )
+   pop_front     Delete first element (public member function )
+   splice        assign the src elements to the back of destination
+ */

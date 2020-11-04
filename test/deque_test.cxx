@@ -16,7 +16,7 @@ TEST_CASE("New_has_size_0")
     CHECK(dq.size() == 0);
 }
 
-/*
+
 TEST_CASE("Push_front_changes_size")
 {
     Deque<int> dq;
@@ -310,4 +310,3 @@ TEST_CASE("Splice Non-Empty/Non-Empty")
     CHECK(dq1.size() == 0);
 }
 
- */
