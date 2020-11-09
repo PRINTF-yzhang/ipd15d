@@ -282,10 +282,13 @@ TEST_CASE("Splice Non-Empty/Empty")
     Deque<int> dq1;
     Deque<int> dq2;
     dq2.push_front(11);
+    dq2.push_front(12);
+    CHECK(dq2.size() == 2);
     dq1.splice(dq2);
-    CHECK(dq1.size() == 1);
+    CHECK(dq1.size() == 2);
     CHECK(dq2.size() == 0);
-    CHECK(dq1.front() == 11);
+    CHECK(dq1.front() == 12);
+    CHECK(dq1.back()==11);
 }
 
 TEST_CASE("Splice Non-Empty/Non-Empty")
@@ -296,12 +299,18 @@ TEST_CASE("Splice Non-Empty/Non-Empty")
     dq1.push_front(10);
     dq2.push_front(13);
     dq2.push_front(12);
+    dq2.push_front(18);
+    CHECK(dq1.size() == 2);
+    CHECK(dq2.size() == 3);
     dq1.splice(dq2);
-    CHECK(dq1.size() == 4);
+    CHECK(dq1.size() == 5);
     CHECK(dq2.size() == 0);
     CHECK(dq1.front() == 10);
+    CHECK(dq1.back() == 13);
     dq1.pop_front();
     CHECK(dq1.front() == 11);
+    dq1.pop_front();
+    CHECK(dq1.front() == 18);
     dq1.pop_front();
     CHECK(dq1.front() == 12);
     dq1.pop_front();
